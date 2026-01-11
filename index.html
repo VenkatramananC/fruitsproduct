@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Distributor System</title>
+    <style>
+        :root {
+            --primary: #2d8080;
+            --primary-light: #3da9a9;
+            --danger: #c0152f;
+            --success: #218080;
+            --warning: #a84b2f;
+            --bg: #fcfcf9;
+            --surface: #fffff5;
+            --border: #d4d4c8;
+            --text: #134252;
+            --text-light: #626c71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin: 0;
+            flex: 1;
+            text-align: center;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .login-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .login-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            color: var(--text);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(45, 128, 128, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #1a6666;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #a01227;
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #c8c8bc;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            width: auto;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section {
+            background: var(--surface);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .customer-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .customer-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .customer-info {
+            flex: 1;
+        }
+
+        .customer-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .customer-details {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .detail-value.pending {
+            color: var(--danger);
+        }
+
+        .detail-value.paid {
+            color: var(--success);
+        }
+
+        .customer-actions {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .alert-warning {
+            background: rgba(168, 75, 47, 0.1);
+            border: 1px solid rgba(168, 75, 47, 0.3);
+            color: var(--warning);
+        }
+
+        .alert-success {
+            background: rgba(33, 128, 128, 0.1);
+            border: 1px solid rgba(33, 128, 128, 0.3);
+            color: var(--success);
+        }
+
+        .alert-danger {
+            background: rgba(192, 21, 47, 0.1);
+            border: 1px solid rgba(192, 21, 47, 0.3);
+            color: var(--danger);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .pending-list {
+            background: rgba(192, 21, 47, 0.05);
+            border: 1px solid rgba(192, 21, 47, 0.2);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .pending-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(192, 21, 47, 0.1);
+        }
+
+        .pending-item:last-child {
+            border-bottom: none;
+        }
+
+        .customer-portal {
+            background: var(--surface);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .balance-amount {
+            font-size: 48px;
+            font-weight: 700;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .status-clear {
+            background: rgba(33, 128, 128, 0.3);
+            color: white;
+        }
+
+        .status-blocked {
+            background: rgba(192, 21, 47, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .customer-card {
+                grid-template-columns: 1fr;
+            }
+
+            .customer-details {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .balance-amount {
+                font-size: 36px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-header">
+            <h2>🍎 Fruit Distributor</h2>
+            <p>Distribution & Payment Management</p>
+        </div>
+
+        <div class="login-tabs">
+            <button class="login-tab active" onclick="switchLoginTab('uncle')">Distributor (Admin)</button>
+            <button class="login-tab" onclick="switchLoginTab('customer')">Customer</button>
+        </div>
+
+        <!-- Distributor Login -->
+        <form class="login-form active" id="uncleLoginForm" onsubmit="uncleLogin(event)">
+            <div class="form-group">
+                <label>Distributor Password</label>
+                <input type="password" id="unclePassword" placeholder="Enter admin password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login as Distributor</button>
+        </form>
+
+        <!-- Customer Login -->
+        <form class="login-form" id="customerLoginForm">
+            <div id="customerLoginTabs" style="display: flex; gap: 5px; margin-bottom: 15px; border-bottom: 1px solid var(--border);">
+                <button type="button" class="login-tab active" style="flex: 1; padding: 8px; border-bottom: 3px solid var(--primary);" onclick="switchCustomerTab('login')">Login</button>
+                <button type="button" class="login-tab" style="flex: 1; padding: 8px;" onclick="switchCustomerTab('register')">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="customerLoginTab" class="login-form active" style="display: block;">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="customerLoginPhone" placeholder="9876543210" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="customerLoginPassword" placeholder="Your password" required>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="customerLogin()">Login</button>
+            </div>
+
+            <!-- Register Form -->
+            <div id="customerRegisterTab" class="login-form" style="display: none;">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="customerRegisterName" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="customerRegisterPhone" placeholder="9876543210" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="customerRegisterAddress" placeholder="Your address" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="customerRegisterPassword" placeholder="Create a password" required>
+                </div>
+                <button type="button" class="btn btn-success" onclick="customerRegister()">Create Account</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Distributor's Dashboard -->
+    <div id="unclePanel" style="display: none;">
+        <div class="container">
+            <header>
+                <h1>🍎 Distributor Dashboard</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </header>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+                <button class="tab-btn" onclick="switchTab('customers')">👥 Customers</button>
+                <button class="tab-btn" onclick="switchTab('payment')">💰 Record Payment</button>
+                <button class="tab-btn" onclick="switchTab('reports')">📈 Reports</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Customers</div>
+                        <div class="stat-value" id="totalCustomers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Pending Amount</div>
+                        <div class="stat-value" id="totalPending">₹0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Collected</div>
+                        <div class="stat-value" id="totalCollected">₹0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Customers with Due</div>
+                        <div class="stat-value" id="customersDue">0</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>⚠️ Customers with Pending Payment (Can't Order Today)</h3>
+                    <div id="pendingList" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+
+            <!-- Customers Tab -->
+            <div id="customers" class="tab-content">
+                <div class="form-section">
+                    <h3>All Customers</h3>
+                    <div class="customer-list" id="customerList" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- Payment Tab -->
+            <div id="payment" class="tab-content">
+                <div class="form-section">
+                    <h3>Record Payment & Order</h3>
+                    <div class="form-group">
+                        <label>Select Customer *</label>
+                        <select id="paymentCustomer" onchange="updateCustomerDetails">
+                            <option value="">-- Select Customer --</option>
+                        </select>
+                    </div>
+
+                    <div id="customerPaymentDetails" style="display:none;">
+                        <div class="alert alert-warning" id="pendingAlert"></div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Previous Due Amount</label>
+                                <input type="text" id="displayPreviousDue" readonly style="background: #f5f5f5;">
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Received (if any)</label>
+                                <input type="number" id="paymentAmount" placeholder="₹0" min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Today's Order Amount</label>
+                            <input type="number" id="orderAmount" placeholder="₹0" min="0" value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Notes (optional)</label>
+                            <input type="text" id="notes" placeholder="e.g., 50kg apples, 30kg oranges">
+                        </div>
+
+                        <button class="btn btn-success" onclick="recordPaymentAndOrder()">✓ Confirm & Record</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <div class="form-section">
+                    <h3>Payment History & Reports</h3>
+                    <div id="reportsList" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Portal -->
+    <div id="customerPanel" style="display: none;">
+        <div class="container">
+            <header>
+                <h1>🍎 My Orders</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </header>
+
+            <div class="customer-portal">
+                <div class="balance-card">
+                    <div class="balance-label">Your Pending Balance</div>
+                    <div class="balance-amount" id="customerBalance">₹0</div>
+                    <div id="customerStatus"></div>
+                </div>
+
+                <div class="form-section" style="margin-bottom: 20px;">
+                    <h3>Place New Order</h3>
+                    <div id="orderBlockMessage" style="display: none;" class="alert alert-danger"></div>
+                    <div id="orderForm" style="display: none;">
+                        <div class="form-group">
+                            <label>Today's Order Amount</label>
+                            <input type="number" id="customerOrderAmount" placeholder="₹0" min="0" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Items Details (optional)</label>
+                            <input type="text" id="customerOrderNotes" placeholder="e.g., 50kg apples, 30kg oranges">
+                        </div>
+                        <button class="btn btn-success" onclick="submitCustomerOrder()">📦 Place Order</button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Your Order History</h3>
+                    <div id="customerHistory" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for detailed customer info -->
+    <div class="modal" id="customerModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div class="modal-header" id="modalTitle"></div>
+            <div id="modalBody"></div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let allCustomers = JSON.parse(localStorage.getItem('fruitCustomers')) || [];
+        let transactions = JSON.parse(localStorage.getItem('fruitTransactions')) || [];
+        let currentUser = null;
+        let unclePassword = 'uncle123'; // Default password - can be changed
+
+        function switchLoginTab(tab) {
+            document.querySelectorAll('.login-form').forEach(f => f.classList.remove('active'));
+            document.querySelectorAll('.login-tab').forEach(b => b.classList.remove('active'));
+            
+            if (tab === 'uncle') {
+                document.getElementById('uncleLoginForm').classList.add('active');
+                document.querySelectorAll('.login-tab')[0].classList.add('active');
+            } else {
+                document.getElementById('customerLoginForm').classList.add('active');
+                document.querySelectorAll('.login-tab')[1].classList.add('active');
+            }
+        }
+
+        function switchCustomerTab(tab) {
+            document.getElementById('customerLoginTab').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('customerRegisterTab').style.display = tab === 'register' ? 'block' : 'none';
+            
+            const tabs = document.querySelectorAll('#customerLoginTabs .login-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            if (tab === 'login') tabs[0].classList.add('active');
+            else tabs[1].classList.add('active');
+        }
+
+        function uncleLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('unclePassword').value;
+            if (password === unclePassword) {
+                currentUser = { type: 'uncle' };
+                showUnclePanel();
+            } else {
+                alert('Incorrect password!');
+            }
+        }
+
+        function customerRegister() {
+            const name = document.getElementById('customerRegisterName').value.trim();
+            const phone = document.getElementById('customerRegisterPhone').value.trim();
+            const address = document.getElementById('customerRegisterAddress').value.trim();
+            const password = document.getElementById('customerRegisterPassword').value;
+
+            if (!name || !phone || !password) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            // Check if phone already exists
+            if (allCustomers.find(c => c.phone === phone)) {
+                alert('Phone number already registered!');
+                return;
+            }
+
+            const newCustomer = {
+                id: Date.now(),
+                name,
+                phone,
+                address,
+                password,
+                createdDate: new Date().toLocaleDateString('en-IN')
+            };
+
+            allCustomers.push(newCustomer);
+            saveData();
+
+            alert('Account created successfully! You can now login.');
+            document.getElementById('customerRegisterName').value = '';
+            document.getElementById('customerRegisterPhone').value = '';
+            document.getElementById('customerRegisterAddress').value = '';
+            document.getElementById('customerRegisterPassword').value = '';
+            switchCustomerTab('login');
+        }
+
+        function customerLogin() {
+            const phone = document.getElementById('customerLoginPhone').value.trim();
+            const password = document.getElementById('customerLoginPassword').value;
+
+            const customer = allCustomers.find(c => c.phone === phone && c.password === password);
+            if (customer) {
+                currentUser = { type: 'customer', ...customer };
+                showCustomerPanel();
+            } else {
+                alert('Invalid phone number or password!');
+            }
+        }
+
+        function showUnclePanel() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('unclePanel').style.display = 'block';
+            updateDashboard();
+            updatePaymentSelect();
+        }
+
+        function showCustomerPanel() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('customerPanel').style.display = 'block';
+            updateCustomerPortal();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('unclePanel').style.display = 'none';
+            document.getElementById('customerPanel').style.display = 'none';
+            document.getElementById('unclePassword').value = '';
+            document.getElementById('customerLoginPhone').value = '';
+            document.getElementById('customerLoginPassword').value = '';
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'dashboard') updateDashboard();
+            if (tabName === 'customers') displayCustomers();
+            if (tabName === 'payment') updatePaymentSelect();
+            if (tabName === 'reports') displayReports();
+        }
+
+        function displayCustomers() {
+            const customerList = document.getElementById('customerList');
+            if (allCustomers.length === 0) {
+                customerList.innerHTML = '<p style="color: var(--text-light);">No customers registered yet.</p>';
+                return;
+            }
+
+            customerList.innerHTML = allCustomers.map(customer => {
+                const due = getCustomerDue(customer.id);
+                const totalOrdered = getCustomerTotalOrdered(customer.id);
+                const totalPaid = getCustomerTotalPaid(customer.id);
+
+                return `
+                    <div class="customer-card">
+                        <div class="customer-info">
+                            <div class="customer-name">${customer.name}</div>
+                            <div class="customer-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Phone</span>
+                                    <span class="detail-value">${customer.phone}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Pending Due</span>
+                                    <span class="detail-value ${due > 0 ? 'pending' : 'paid'}">₹${due}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Total Ordered</span>
+                                    <span class="detail-value">₹${totalOrdered}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="customer-actions">
+                            <button class="btn btn-primary btn-small" onclick="viewCustomerDetails(${customer.id})">View Details</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function viewCustomerDetails(customerId) {
+            const customer = allCustomers.find(c => c.id === customerId);
+            const due = getCustomerDue(customerId);
+            const totalOrdered = getCustomerTotalOrdered(customerId);
+            const totalPaid = getCustomerTotalPaid(customerId);
+            const customerTransactions = transactions.filter(t => t.customerId === customerId);
+
+            let modalBody = `
+                <p><strong>Name:</strong> ${customer.name}</p>
+                <p><strong>Phone:</strong> ${customer.phone}</p>
+                <p><strong>Address:</strong> ${customer.address || '-'}</p>
+                <p><strong>Added:</strong> ${customer.createdDate}</p>
+                <hr style="border: none; border-top: 1px solid var(--border); margin: 15px 0;">
+                <h4>Summary</h4>
+                <p><strong>Total Ordered:</strong> ₹${totalOrdered}</p>
+                <p><strong>Total Paid:</strong> ₹${totalPaid}</p>
+                <p><strong>Pending Due:</strong> <span style="color: var(--danger); font-weight: 600;">₹${due}</span></p>
+                <hr style="border: none; border-top: 1px solid var(--border); margin: 15px 0;">
+                <h4>Transaction History</h4>
+                ${customerTransactions.length === 0 ? '<p style="color: var(--text-light);">No transactions yet.</p>' : `
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        ${customerTransactions.map(t => `
+                            <div style="padding: 10px; border-bottom: 1px solid var(--border); font-size: 13px;">
+                                <div><strong>${t.date}</strong></div>
+                                ${t.orderAmount > 0 ? `<div>Order: ₹${t.orderAmount}</div>` : ''}
+                                ${t.paymentAmount > 0 ? `<div style="color: var(--success);">Payment: ₹${t.paymentAmount}</div>` : ''}
+                                ${t.notes ? `<div style="color: var(--text-light);">${t.notes}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `}
+            `;
+
+            document.getElementById('modalTitle').textContent = customer.name;
+            document.getElementById('modalBody').innerHTML = modalBody;
+            document.getElementById('customerModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('customerModal').classList.remove('active');
+        }
+
+        function updatePaymentSelect() {
+            const select = document.getElementById('paymentCustomer');
+            select.innerHTML = '<option value="">-- Select Customer --</option>' + 
+                allCustomers.map(c => `<option value="${c.id}">${c.name} (${c.phone})</option>`).join('');
+        }
+
+        function updateCustomerDetails() {
+            const customerId = parseInt(document.getElementById('paymentCustomer').value);
+            const detailsDiv = document.getElementById('customerPaymentDetails');
+
+            if (!customerId) {
+                detailsDiv.style.display = 'none';
+                return;
+            }
+
+            const previousDue = getCustomerDue(customerId);
+            document.getElementById('displayPreviousDue').value = '₹' + previousDue;
+            document.getElementById('paymentAmount').value = previousDue > 0 ? previousDue : '';
+            document.getElementById('orderAmount').value = '';
+            document.getElementById('notes').value = '';
+
+            if (previousDue > 0) {
+                document.getElementById('pendingAlert').innerHTML = `
+                    ⚠️ <strong>Customer has ₹${previousDue} pending from previous!</strong><br>
+                    They must pay this before ordering new stock.
+                `;
+                document.getElementById('pendingAlert').className = 'alert alert-warning';
+            } else {
+                document.getElementById('pendingAlert').innerHTML = '✓ No pending dues. Customer can order.';
+                document.getElementById('pendingAlert').className = 'alert alert-success';
+            }
+
+            detailsDiv.style.display = 'block';
+        }
+
+        function recordPaymentAndOrder() {
+            const customerId = parseInt(document.getElementById('paymentCustomer').value);
+            const paymentAmount = parseFloat(document.getElementById('paymentAmount').value) || 0;
+            const orderAmount = parseFloat(document.getElementById('orderAmount').value) || 0;
+            const notes = document.getElementById('notes').value.trim();
+
+            if (!customerId) {
+                alert('Please select a customer');
+                return;
+            }
+
+            const previousDue = getCustomerDue(customerId);
+
+            if (previousDue > 0 && paymentAmount < previousDue) {
+                alert(`Customer has ₹${previousDue} pending.\n\nBefore placing new order, they MUST pay ₹${previousDue}.\n\nYou entered: ₹${paymentAmount}`);
+                return;
+            }
+
+            if (orderAmount < 0) {
+                alert('Order amount cannot be negative');
+                return;
+            }
+
+            const transaction = {
+                customerId,
+                date: new Date().toLocaleDateString('en-IN', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                paymentAmount,
+                orderAmount,
+                notes
+            };
+
+            transactions.push(transaction);
+            saveData();
+
+            document.getElementById('paymentCustomer').value = '';
+            document.getElementById('displayPreviousDue').value = '';
+            document.getElementById('paymentAmount').value = '';
+            document.getElementById('orderAmount').value = '';
+            document.getElementById('notes').value = '';
+            document.getElementById('customerPaymentDetails').style.display = 'none';
+
+            alert('✓ Transaction recorded successfully!');
+            updateDashboard();
+        }
+
+        function getCustomerDue(customerId) {
+            const customerTransactions = transactions.filter(t => t.customerId === customerId);
+            let totalOrdered = 0;
+            let totalPaid = 0;
+
+            customerTransactions.forEach(t => {
+                totalOrdered += t.orderAmount;
+                totalPaid += t.paymentAmount;
+            });
+
+            return Math.max(0, totalOrdered - totalPaid);
+        }
+
+        function getCustomerTotalOrdered(customerId) {
+            return transactions
+                .filter(t => t.customerId === customerId)
+                .reduce((sum, t) => sum + t.orderAmount, 0);
+        }
+
+        function getCustomerTotalPaid(customerId) {
+            return transactions
+                .filter(t => t.customerId === customerId)
+                .reduce((sum, t) => sum + t.paymentAmount, 0);
+        }
+
+        function updateDashboard() {
+            document.getElementById('totalCustomers').textContent = allCustomers.length;
+
+            let totalPending = 0;
+            let customersDue = 0;
+            let totalCollected = 0;
+
+            allCustomers.forEach(customer => {
+                const due = getCustomerDue(customer.id);
+                const paid = getCustomerTotalPaid(customer.id);
+                totalPending += due;
+                totalCollected += paid;
+                if (due > 0) customersDue++;
+            });
+
+            document.getElementById('totalPending').textContent = '₹' + totalPending;
+            document.getElementById('totalCollected').textContent = '₹' + totalCollected;
+            document.getElementById('customersDue').textContent = customersDue;
+
+            const pendingList = document.getElementById('pendingList');
+            const pendingCustomers = allCustomers.filter(c => getCustomerDue(c.id) > 0);
+
+            if (pendingCustomers.length === 0) {
+                pendingList.innerHTML = '<p style="color: var(--success);">✓ All customers have cleared their dues!</p>';
+            } else {
+                pendingList.innerHTML = pendingCustomers.map(customer => {
+                    const due = getCustomerDue(customer.id);
+                    return `
+                        <div class="pending-list">
+                            <div class="pending-item"><strong>${customer.name}</strong> (${customer.phone}) - Pending: ₹${due}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function displayReports() {
+            const reportsList = document.getElementById('reportsList');
+
+            if (transactions.length === 0) {
+                reportsList.innerHTML = '<p style="color: var(--text-light);">No transactions recorded yet.</p>';
+                return;
+            }
+
+            let html = '<table style="width: 100%; border-collapse: collapse; font-size: 14px;">';
+            html += '<tr style="background: var(--border);">';
+            html += '<th style="padding: 10px; text-align: left; border: 1px solid var(--border);">Date</th>';
+            html += '<th style="padding: 10px; text-align: left; border: 1px solid var(--border);">Customer</th>';
+            html += '<th style="padding: 10px; text-align: right; border: 1px solid var(--border);">Order</th>';
+            html += '<th style="padding: 10px; text-align: right; border: 1px solid var(--border);">Payment</th>';
+            html += '<th style="padding: 10px; text-align: left; border: 1px solid var(--border);">Notes</th>';
+            html += '</tr>';
+
+            transactions.forEach(t => {
+                const customer = allCustomers.find(c => c.id === t.customerId);
+                html += '<tr>';
+                html += `<td style="padding: 10px; border: 1px solid var(--border);">${t.date}</td>`;
+                html += `<td style="padding: 10px; border: 1px solid var(--border);">${customer?.name || 'Unknown'}</td>`;
+                html += `<td style="padding: 10px; border: 1px solid var(--border); text-align: right; color: var(--text-light);">₹${t.orderAmount}</td>`;
+                html += `<td style="padding: 10px; border: 1px solid var(--border); text-align: right; color: var(--success); font-weight: 600;">₹${t.paymentAmount}</td>`;
+                html += `<td style="padding: 10px; border: 1px solid var(--border);">${t.notes || '-'}</td>`;
+                html += '</tr>';
+            });
+
+            html += '</table>';
+            reportsList.innerHTML = html;
+        }
+
+        function updateCustomerPortal() {
+            const customerId = currentUser.id;
+            const due = getCustomerDue(customerId);
+            const totalOrdered = getCustomerTotalOrdered(customerId);
+            const totalPaid = getCustomerTotalPaid(customerId);
+            const customerTransactions = transactions.filter(t => t.customerId === customerId);
+
+            // Update balance
+            document.getElementById('customerBalance').textContent = '₹' + due;
+
+            // Update status
+            const statusDiv = document.getElementById('customerStatus');
+            if (due > 0) {
+                statusDiv.innerHTML = `<span class="status-badge status-blocked">❌ BLOCKED: Pay ₹${due} to order</span>`;
+                document.getElementById('orderBlockMessage').style.display = 'block';
+                document.getElementById('orderBlockMessage').innerHTML = `
+                    ⚠️ You have a pending balance of <strong>₹${due}</strong> from your previous order.<br>
+                    You MUST pay this amount before placing a new order today.
+                `;
+                document.getElementById('orderForm').style.display = 'none';
+            } else {
+                statusDiv.innerHTML = '<span class="status-badge status-clear">✓ APPROVED: You can order</span>';
+                document.getElementById('orderBlockMessage').style.display = 'none';
+                document.getElementById('orderForm').style.display = 'block';
+                document.getElementById('customerOrderAmount').value = '0';
+                document.getElementById('customerOrderNotes').value = '';
+            }
+
+            // Update history
+            const historyDiv = document.getElementById('customerHistory');
+            if (customerTransactions.length === 0) {
+                historyDiv.innerHTML = '<p style="color: var(--text-light);">No order history yet.</p>';
+            } else {
+                historyDiv.innerHTML = customerTransactions.map(t => `
+                    <div style="background: var(--bg); padding: 15px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid var(--primary);">
+                        <div style="font-weight: 600; margin-bottom: 8px;">${t.date}</div>
+                        ${t.orderAmount > 0 ? `<div>📦 Order: <span style="color: var(--text-light);">₹${t.orderAmount}</span></div>` : ''}
+                        ${t.paymentAmount > 0 ? `<div>💰 Paid: <span style="color: var(--success); font-weight: 600;">₹${t.paymentAmount}</span></div>` : ''}
+                        ${t.notes ? `<div style="color: var(--text-light); font-size: 13px;">📝 ${t.notes}</div>` : ''}
+                    </div>
+                `).join('');
+            }
+        }
+
+        function submitCustomerOrder() {
+            const orderAmount = parseFloat(document.getElementById('customerOrderAmount').value) || 0;
+            const notes = document.getElementById('customerOrderNotes').value.trim();
+            const customerId = currentUser.id;
+
+            // Allow 0 amount if customer didn't get stock from distributor
+            if (orderAmount < 0) {
+                alert('Order amount cannot be negative');
+                return;
+            }
+
+            const transaction = {
+                customerId,
+                date: new Date().toLocaleDateString('en-IN', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                paymentAmount: 0,
+                orderAmount,
+                notes
+            };
+
+            transactions.push(transaction);
+            saveData();
+
+            alert('✓ Order placed successfully!\n\nYour distributor will deliver and collect payment.');
+            updateCustomerPortal();
+        }
+
+        function saveData() {
+            localStorage.setItem('fruitCustomers', JSON.stringify(allCustomers));
+            localStorage.setItem('fruitTransactions', JSON.stringify(transactions));
+        }
+
+        // Demo: Uncomment to set distributor password
+        // Change 'uncle123' to your own password in the unclePassword variable above
+    </script>
+</body>
+</html>
